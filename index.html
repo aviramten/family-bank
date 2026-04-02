@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>קופת המשפחה</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1A5C38">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="קופת המשפחה">
+<link rel="apple-touch-icon" href="icon-192.svg">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --green-dark:#1A5C38;--green:#2D8653;--green-mid:#4CAF7D;--green-light:#E8F5EE;--green-pale:#F2FAF5;
+  --orange:#F97316;--orange-light:#FFF4ED;--orange-mid:#FED7AA;
+  --text:#1C2B22;--muted:#5A7A66;--border:#C8E0D0;--card:#FFFFFF;--bg:#F5FBF7;
+  --radius:16px;--radius-sm:10px;
+  --ben:#2563EB;--ben-light:#EFF6FF;--ben-border:#BFDBFE;
+  --gili:#DB2777;--gili-light:#FDF2F8;--gili-border:#FBCFE8;
+}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);direction:rtl}
+.app{max-width:640px;margin:0 auto;padding-bottom:3rem}
+.header{background:var(--green-dark);padding:1.25rem 1.5rem 1rem;position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;top:-30px;left:-30px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.05)}
+.header::after{content:'';position:absolute;bottom:-40px;right:-20px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.04)}
+.header-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.app-title{font-size:22px;font-weight:900;color:#fff;letter-spacing:-.3px}
+.app-sub{font-size:13px;color:rgba(255,255,255,.7);margin-top:2px}
+.reset-btn{background:rgba(255,255,255,.15);border:none;color:rgba(255,255,255,.8);font-family:'Nunito',sans-serif;font-size:12px;padding:5px 12px;border-radius:20px;cursor:pointer;white-space:nowrap}
+.tue-banner{margin:1rem 1rem 0;border-radius:var(--radius);padding:12px 14px;display:flex;align-items:center;gap:10px}
+.tue-banner.pending{background:#FFFBEB;border:1.5px solid #F59E0B}
+.tue-banner.done{background:#ECFDF5;border:1.5px solid var(--green-mid)}
+.tue-banner.waiting{background:var(--card);border:1px dashed var(--border)}
+.tue-icon{font-size:24px;flex-shrink:0}
+.tue-body{flex:1;line-height:1.4}
+.tue-title{font-size:14px;font-weight:800}
+.tue-banner.pending .tue-title{color:#92400E}
+.tue-banner.done .tue-title{color:var(--green-dark)}
+.tue-banner.waiting .tue-title{color:var(--muted)}
+.tue-sub{font-size:12px;color:var(--muted);margin-top:1px}
+.tue-btn{background:#92400E;color:#fff;border:none;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;padding:7px 14px;border-radius:var(--radius-sm);cursor:pointer;white-space:nowrap}
+.kid-nav{display:flex;gap:8px;padding:1rem 1rem 0}
+.kid-tab{flex:1;background:var(--card);border:2.5px solid var(--border);border-radius:var(--radius);padding:10px 8px;font-family:'Nunito',sans-serif;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:all .2s;position:relative}
+.kid-tab .kid-avatar{font-size:30px;line-height:1}
+.kid-tab .kid-name{font-size:14px;font-weight:900;color:var(--muted)}
+.kid-tab .kid-total{font-size:11px;font-weight:600;color:var(--muted)}
+.kid-tab .active-pip{width:8px;height:8px;border-radius:50%;background:transparent;margin-top:2px;transition:background .2s}
+.kid-tab#tab-ben.active{background:var(--ben-light);border-color:var(--ben)}
+.kid-tab#tab-ben.active .kid-name{color:var(--ben)}
+.kid-tab#tab-ben.active .kid-total{color:var(--ben)}
+.kid-tab#tab-ben.active .active-pip{background:var(--ben)}
+.kid-tab#tab-gili.active{background:var(--gili-light);border-color:var(--gili)}
+.kid-tab#tab-gili.active .kid-name{color:var(--gili)}
+.kid-tab#tab-gili.active .kid-total{color:var(--gili)}
+.kid-tab#tab-gili.active .active-pip{background:var(--gili)}
+.kid-panel{display:none;padding:1rem}
+.kid-panel.active{display:block}
+.accent-bar{height:4px;border-radius:0 0 4px 4px;margin:0 1rem;transition:background .2s}
+.accent-bar.ben{background:var(--ben)}
+.accent-bar.gili{background:var(--gili)}
+.bal-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1rem}
+.bal-card{border-radius:var(--radius);padding:1rem 1.1rem;border:1.5px solid}
+.bal-card.spend{background:var(--orange-light);border-color:var(--orange-mid)}
+.bal-card.save{background:var(--green-light);border-color:#A7F3D0}
+.bal-tag{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;margin-bottom:5px}
+.bal-card.spend .bal-tag{color:var(--orange)}
+.bal-card.save .bal-tag{color:var(--green)}
+.bal-num{font-size:26px;font-weight:900;line-height:1}
+.bal-card.spend .bal-num{color:var(--orange)}
+.bal-card.save .bal-num{color:var(--green-dark)}
+.bal-hint{font-size:11px;margin-top:4px}
+.bal-card.spend .bal-hint{color:#C2410C}
+.bal-card.save .bal-hint{color:var(--green)}
+.card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:1.1rem;margin-bottom:.875rem}
+.card-title{font-size:15px;font-weight:800;color:var(--green-dark);margin-bottom:.875rem;display:flex;align-items:center;gap:6px}
+.split-labels{display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:6px}
+.split-labels .sl{color:var(--orange)}
+.split-labels .sr{color:var(--green)}
+input[type=range].split-range{-webkit-appearance:none;appearance:none;width:100%;height:10px;border-radius:5px;outline:none;cursor:pointer;margin-bottom:10px}
+input[type=range].split-range::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;background:#fff;border:3px solid var(--green-dark);cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.15);margin-top:-8px}
+.split-bar{display:flex;border-radius:8px;overflow:hidden;height:38px;margin-bottom:10px}
+.split-bar-spend{background:var(--orange);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;transition:width .08s}
+.split-bar-save{background:var(--green);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;transition:width .08s}
+.add-week-btn{width:100%;padding:12px;border-radius:var(--radius-sm);border:none;background:var(--green-dark);color:#fff;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:opacity .15s;margin-top:4px}
+.add-week-btn:hover{opacity:.88}
+.chip-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.chip{padding:6px 13px;border-radius:20px;font-size:13px;font-weight:700;border:1.5px solid;cursor:pointer;font-family:'Nunito',sans-serif;background:transparent;transition:all .15s}
+.chip.orange{border-color:var(--orange);color:var(--orange)}
+.chip.orange.on{background:var(--orange);color:#fff}
+.chip.green{border-color:var(--green);color:var(--green)}
+.chip.green.on{background:var(--green);color:#fff}
+.inp-row{display:flex;gap:8px;align-items:flex-end}
+.inp-group{display:flex;flex-direction:column;gap:3px}
+.inp-group label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.inp-group input{font-family:'Nunito',sans-serif;font-size:14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:8px 10px;width:100%}
+.go-btn{padding:9px 18px;border-radius:var(--radius-sm);border:none;background:var(--green-dark);color:#fff;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;white-space:nowrap}
+.go-btn:hover{opacity:.87}
+.interest-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.int-left .int-tag{font-size:11px;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:.04em}
+.int-left .int-num{font-size:22px;font-weight:900;color:var(--green-dark)}
+.int-left .int-sub{font-size:12px;color:var(--muted)}
+.int-btn{background:var(--green);color:#fff;border:none;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;padding:9px 16px;border-radius:var(--radius-sm);cursor:pointer}
+.int-btn:hover{opacity:.87}
+.log-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--green-light)}
+.log-item:last-child{border-bottom:none}
+.log-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.log-dot.weekly,.log-dot.save{background:var(--green)}
+.log-dot.spend,.log-dot.withdraw{background:var(--orange)}
+.log-dot.interest{background:#7C3AED}
+.log-info{flex:1}
+.log-type{font-size:13px;font-weight:700}
+.log-note{font-size:12px;color:var(--muted)}
+.log-right{text-align:left}
+.log-amt{font-size:14px;font-weight:800}
+.log-amt.pos{color:var(--green-dark)}
+.log-amt.neg{color:var(--orange)}
+.log-date{font-size:11px;color:var(--muted)}
+.log-empty{text-align:center;padding:1.5rem;color:var(--muted);font-size:14px}
+.toast-el{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:var(--green-dark);color:#fff;padding:8px 20px;border-radius:20px;font-size:13px;font-weight:700;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap;z-index:99}
+.toast-el.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="header">
+  <div class="header-top">
+    <div>
+      <div class="app-title">🌿 קופת המשפחה</div>
+      <div class="app-sub" id="today-label">טוען...</div>
+    </div>
+    <button class="reset-btn" onclick="resetAll()">אפס הכל</button>
+  </div>
+</div>
+<div id="tue-banner-el"></div>
+<div class="kid-nav">
+  <button class="kid-tab active" id="tab-ben" onclick="switchKid('ben')">
+    <span class="kid-avatar">👦</span>
+    <span class="kid-name">בן</span>
+    <span class="kid-total" id="tab-ben-total">0 ₪</span>
+    <span class="active-pip"></span>
+  </button>
+  <button class="kid-tab" id="tab-gili" onclick="switchKid('gili')">
+    <span class="kid-avatar">👧</span>
+    <span class="kid-name">גילי</span>
+    <span class="kid-total" id="tab-gili-total">0 ₪</span>
+    <span class="active-pip"></span>
+  </button>
+</div>
+<div class="accent-bar ben" id="accent-bar"></div>
+<div id="panel-ben" class="kid-panel active"></div>
+<div id="panel-gili" class="kid-panel"></div>
+</div>
+<div class="toast-el" id="toast"></div>
+
+<script>
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js').catch(()=>{});
+}
+
+const WEEKLY=100,RATE=.10;
+const KIDS={ben:{name:'בן'},gili:{name:'גילי'}};
+const HE_DAYS=['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
+const HE_MON=['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
+let state={ben:null,gili:null},meta={lastUpdate:null},actType={ben:'spend-out',gili:'spend-out'};
+let currentKid='ben';
+
+function defKid(){return{spend:0,save:0,log:[]}}
+function fmt(n){return Math.abs(Math.round(n)).toLocaleString('he-IL')+' ₪'}
+function todayStr(){const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+function shortDate(){const d=new Date();return`${d.getDate()}/${d.getMonth()+1}`}
+function isTue(){return new Date().getDay()===2}
+function daysToTue(){const d=new Date().getDay();return d===2?7:(2-d+7)%7}
+function weeksSince(s){if(!s)return null;return Math.floor((Date.now()-new Date(s+'T12:00:00'))/(7*864e5))}
+function fmtDateHe(s){if(!s)return'';const d=new Date(s+'T12:00:00');return`${d.getDate()} ${HE_MON[d.getMonth()]}`}
+
+function load(){
+  for(const k of['ben','gili']){
+    try{const r=localStorage.getItem('fam_'+k);state[k]=r?JSON.parse(r):defKid()}
+    catch{state[k]=defKid()}
+  }
+  try{const r=localStorage.getItem('fam_meta');if(r)meta=JSON.parse(r)}catch{}
+  renderAll();
+}
+function saveKid(k){try{localStorage.setItem('fam_'+k,JSON.stringify(state[k]))}catch{}}
+function saveMeta(){try{localStorage.setItem('fam_meta',JSON.stringify(meta))}catch{}}
+
+function renderAll(){
+  const now=new Date();
+  document.getElementById('today-label').textContent=`היום ${HE_DAYS[now.getDay()]}, ${now.getDate()} ${HE_MON[now.getMonth()]}`;
+  for(const k of['ben','gili']){
+    const s=state[k];
+    document.getElementById('tab-'+k+'-total').textContent=fmt(s.spend+s.save)+' סה"כ';
+    renderKid(k);
+  }
+  renderTue();
+}
+
+function renderTue(){
+  const el=document.getElementById('tue-banner-el');
+  const today=todayStr(),done=meta.lastUpdate===today;
+  const weeks=weeksSince(meta.lastUpdate);
+  const lastMsg=meta.lastUpdate?`עדכון אחרון: ${fmtDateHe(meta.lastUpdate)}`:'עדיין לא בוצע עדכון';
+  const overdueMsg=weeks!=null&&weeks>1?` · ${weeks} שבועות ללא עדכון ⚠️`:'';
+  if(isTue()&&!done){
+    el.innerHTML=`<div class="tue-banner pending" style="margin:1rem 1rem 0"><span class="tue-icon">🔔</span><div class="tue-body"><div class="tue-title">יום שלישי — זמן לחלק דמי כיס!</div><div class="tue-sub">${lastMsg}${overdueMsg}</div></div><button class="tue-btn" onclick="markDone()">סמן ✓</button></div>`;
+  } else if(isTue()&&done){
+    el.innerHTML=`<div class="tue-banner done" style="margin:1rem 1rem 0"><span class="tue-icon">✅</span><div class="tue-body"><div class="tue-title">דמי הכיס חולקו השבוע!</div><div class="tue-sub">עדכנתם היום — כל הכבוד 🎉</div></div></div>`;
+  } else {
+    el.innerHTML=`<div class="tue-banner waiting" style="margin:1rem 1rem 0"><span class="tue-icon">📅</span><div class="tue-body"><div class="tue-title">יום שלישי הבא בעוד ${daysToTue()} ימים</div><div class="tue-sub">${lastMsg}${overdueMsg}</div></div></div>`;
+  }
+}
+
+function markDone(){meta.lastUpdate=todayStr();saveMeta();renderAll();toast('מסומן! 🎉')}
+
+function renderKid(kid){
+  const s=state[kid];
+  const interest=Math.round(s.save*RATE);
+  const logHtml=s.log.length===0
+    ?`<div class="log-empty">עדיין אין פעולות 📭</div>`
+    :[...s.log].reverse().slice(0,15).map(e=>{
+        const dot=e.type==='interest'?'interest':e.type==='weekly'?'weekly':e.amount>0?'save':'spend';
+        const label={spend:'הוצאה 🛍️',save:'הפקדה 🐷',interest:'ריבית ✨',weekly:'דמי כיס 💰','withdraw-save':'משיכה ↩️'}[e.type]||e.type;
+        return`<div class="log-item"><div class="log-dot ${dot}"></div><div class="log-info"><div class="log-type">${label}</div>${e.note?`<div class="log-note">${e.note}</div>`:''}</div><div class="log-right"><div class="log-amt ${e.amount>=0?'pos':'neg'}">${e.amount>=0?'+':'−'}${fmt(e.amount)}</div><div class="log-date">${e.date||''}</div></div></div>`;
+      }).join('');
+
+  document.getElementById('panel-'+kid).innerHTML=`
+    <div class="bal-grid">
+      <div class="bal-card spend"><div class="bal-tag">🛍️ בזבוז</div><div class="bal-num">${fmt(s.spend)}</div><div class="bal-hint">יתרה לשימוש חופשי</div></div>
+      <div class="bal-card save"><div class="bal-tag">🐷 חיסכון</div><div class="bal-num">${fmt(s.save)}</div><div class="bal-hint">ריבית הבאה: +${fmt(interest)}</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">📅 חלוקת שבוע — ${WEEKLY} ₪</div>
+      <div class="split-labels"><span class="sl">🛍️ בזבוז: <span id="${kid}-spv">50</span> ₪</span><span class="sr"><span id="${kid}-svv">50</span> ₪ :חיסכון 🐷</span></div>
+      <input type="range" class="split-range" id="sl-${kid}" min="1" max="99" value="50" oninput="onSl('${kid}',this.value)">
+      <div class="split-bar"><div class="split-bar-spend" id="${kid}-bsp" style="width:50%">50 ₪</div><div class="split-bar-save" id="${kid}-bsv" style="width:50%">50 ₪</div></div>
+      <button class="add-week-btn" onclick="addWeek('${kid}')">✅ הוסף שבוע זה</button>
+    </div>
+    <div class="card">
+      <div class="card-title">⚡ פעולה מהירה</div>
+      <div class="chip-row">
+        <button class="chip orange on" id="${kid}-c-so" onclick="setAct('${kid}','spend-out')">🛍️ הוצאה</button>
+        <button class="chip green" id="${kid}-c-se" onclick="setAct('${kid}','save-extra')">🐷 הפקדה</button>
+        <button class="chip orange" id="${kid}-c-ws" onclick="setAct('${kid}','withdraw-save')">↩️ משיכה</button>
+      </div>
+      <div class="inp-row">
+        <div class="inp-group" style="max-width:90px"><label>סכום ₪</label><input type="number" id="${kid}-amt" placeholder="0" min="0"></div>
+        <div class="inp-group" style="flex:1"><label>הערה</label><input type="text" id="${kid}-note" placeholder="למה?"></div>
+        <button class="go-btn" onclick="addAct('${kid}')">הוסף ↗</button>
+      </div>
+    </div>
+    <div class="card" style="background:var(--green-pale);border-color:#A7F3D0">
+      <div class="interest-row">
+        <div class="int-left"><div class="int-tag">ריבית חודשית 10%</div><div class="int-num">+${fmt(interest)}</div><div class="int-sub">על ${fmt(s.save)} בחיסכון</div></div>
+        <button class="int-btn" onclick="addInterest('${kid}')">הוסף ריבית 🎁</button>
+      </div>
+    </div>
+    <div class="card"><div class="card-title">📋 היסטוריה</div>${logHtml}</div>
+  `;
+  setSl(kid,50);
+}
+
+function onSl(kid,val){
+  val=parseInt(val);const sv=WEEKLY-val;
+  document.getElementById(kid+'-spv').textContent=val;
+  document.getElementById(kid+'-svv').textContent=sv;
+  document.getElementById(kid+'-bsp').style.width=val+'%';
+  document.getElementById(kid+'-bsp').textContent=val+' ₪';
+  document.getElementById(kid+'-bsv').style.width=sv+'%';
+  document.getElementById(kid+'-bsv').textContent=sv+' ₪';
+  setSl(kid,val);
+}
+function setSl(kid,val){
+  const el=document.getElementById('sl-'+kid);
+  if(el)el.style.background=`linear-gradient(to right,var(--orange) ${val}%,var(--green) ${val}%)`;
+}
+function setAct(kid,type){
+  actType[kid]=type;
+  const map={'spend-out':['so','orange'],'save-extra':['se','green'],'withdraw-save':['ws','orange']};
+  for(const[k,[id,col]] of Object.entries(map)){
+    const el=document.getElementById(kid+'-c-'+id);
+    if(el)el.className='chip '+(col==='green'?'green':'orange')+(k===type?' on':'');
+  }
+}
+function addWeek(kid){
+  const sl=document.getElementById('sl-'+kid);
+  const sp=parseInt(sl.value),sv=WEEKLY-sp;
+  state[kid].spend+=sp;state[kid].save+=sv;
+  state[kid].log.push({date:shortDate(),type:'weekly',amount:WEEKLY,note:`בזבוז ${sp} + חיסכון ${sv}`});
+  saveKid(kid);renderAll();toast(`${KIDS[kid].name}: שבוע נוסף! 🎉`);
+}
+function addAct(kid){
+  const amt=parseInt(document.getElementById(kid+'-amt').value)||0;
+  const note=document.getElementById(kid+'-note').value;
+  if(!amt){toast('הכנס סכום',true);return}
+  const s=state[kid],type=actType[kid],d=shortDate();
+  if(type==='spend-out'){s.spend-=amt;s.log.push({date:d,type:'spend',amount:-amt,note})}
+  else if(type==='save-extra'){s.save+=amt;s.log.push({date:d,type:'save',amount:amt,note})}
+  else if(type==='withdraw-save'){s.save-=amt;s.log.push({date:d,type:'withdraw-save',amount:-amt,note})}
+  saveKid(kid);renderAll();toast('נרשם ✅');
+}
+function addInterest(kid){
+  const s=state[kid];
+  if(s.save<=0){toast('אין כסף בחיסכון',true);return}
+  const i=Math.round(s.save*RATE);s.save+=i;
+  s.log.push({date:shortDate(),type:'interest',amount:i,note:'10% ריבית חודשית'});
+  saveKid(kid);renderAll();toast(`ריבית +${fmt(i)} נוספה! ✨`);
+}
+function switchKid(kid){
+  currentKid=kid;
+  document.querySelectorAll('.kid-tab').forEach((t,i)=>t.classList.toggle('active',['ben','gili'][i]===kid));
+  document.querySelectorAll('.kid-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+kid).classList.add('active');
+  document.getElementById('accent-bar').className='accent-bar '+kid;
+}
+function resetAll(){
+  if(!confirm('למחוק את כל הנתונים?'))return;
+  for(const k of['ben','gili']){state[k]=defKid();saveKid(k)}
+  meta={lastUpdate:null};saveMeta();renderAll();toast('הכל אופס');
+}
+let tt;
+function toast(msg,err){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.style.background=err?'#DC2626':'var(--green-dark)';
+  el.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>el.classList.remove('show'),2200);
+}
+load();
+</script>
+</body>
+</html>
