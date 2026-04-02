@@ -1,5 +1,11 @@
 const CACHE = 'family-bank-v1';
-const FILES = ['/', '/index.html', '/manifest.json', '/icon-192.svg', '/icon-512.svg'];
+const FILES = [
+  '/family-bank/',
+  '/family-bank/index.html',
+  '/family-bank/manifest.json',
+  '/family-bank/icon-192.svg',
+  '/family-bank/icon-512.svg'
+];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)));
