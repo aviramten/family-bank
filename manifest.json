@@ -1,8 +1,9 @@
-"קופת המשפחה",
+{
+  "name": "קופת המשפחה",
   "short_name": "קופת המשפחה",
   "description": "ניהול דמי כיס לילדים",
-  "start_url": "/family-bank/index.html",
-  "scope": "/family-bank/",
+  "start_url": "index.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#F5FBF7",
   "theme_color": "#1A5C38",
@@ -11,14 +12,16 @@
   "dir": "rtl",
   "icons": [
     {
-      "src": "/family-bank/icon-192.svg",
+      "src": "icon-192.svg",
       "sizes": "192x192",
       "type": "image/svg+xml",
       "purpose": "any maskable"
     },
     {
-      "src": "/family-bank/icon-512.svg",
+      "src": "icon-512.svg",
       "sizes": "512x512",
       "type": "image/svg+xml",
       "purpose": "any maskable"
     }
+  ]
+}
