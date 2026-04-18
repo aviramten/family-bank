@@ -19,8 +19,8 @@
   --orange:#F97316;--orange-light:#FFF4ED;--orange-mid:#FED7AA;
   --text:#1C2B22;--muted:#5A7A66;--border:#C8E0D0;--card:#FFFFFF;--bg:#F5FBF7;
   --radius:16px;--radius-sm:10px;
-  --ben:#2563EB;--ben-light:#EFF6FF;--ben-border:#BFDBFE;
-  --gili:#DB2777;--gili-light:#FDF2F8;--gili-border:#FBCFE8;
+  --ben:#2563EB;--ben-light:#EFF6FF;
+  --gili:#DB2777;--gili-light:#FDF2F8;
 }
 body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);direction:rtl}
 .app{max-width:640px;margin:0 auto;padding-bottom:3rem}
@@ -31,6 +31,10 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);dire
 .app-title{font-size:22px;font-weight:900;color:#fff;letter-spacing:-.3px}
 .app-sub{font-size:13px;color:rgba(255,255,255,.7);margin-top:2px}
 .reset-btn{background:rgba(255,255,255,.15);border:none;color:rgba(255,255,255,.8);font-family:'Nunito',sans-serif;font-size:12px;padding:5px 12px;border-radius:20px;cursor:pointer;white-space:nowrap}
+.settings-bar{background:rgba(0,0,0,.15);margin:10px 0 0;border-radius:10px;padding:8px 12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.settings-bar label{font-size:12px;color:rgba(255,255,255,.8);font-weight:700;white-space:nowrap}
+.settings-bar input{font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;border:none;border-radius:6px;padding:4px 8px;width:70px;text-align:center}
+.settings-sep{color:rgba(255,255,255,.3);font-size:12px}
 .tue-banner{margin:1rem 1rem 0;border-radius:var(--radius);padding:12px 14px;display:flex;align-items:center;gap:10px}
 .tue-banner.pending{background:#FFFBEB;border:1.5px solid #F59E0B}
 .tue-banner.done{background:#ECFDF5;border:1.5px solid var(--green-mid)}
@@ -44,18 +48,16 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);dire
 .tue-sub{font-size:12px;color:var(--muted);margin-top:1px}
 .tue-btn{background:#92400E;color:#fff;border:none;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;padding:7px 14px;border-radius:var(--radius-sm);cursor:pointer;white-space:nowrap}
 .kid-nav{display:flex;gap:8px;padding:1rem 1rem 0}
-.kid-tab{flex:1;background:var(--card);border:2.5px solid var(--border);border-radius:var(--radius);padding:10px 8px;font-family:'Nunito',sans-serif;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:all .2s;position:relative}
+.kid-tab{flex:1;background:var(--card);border:2.5px solid var(--border);border-radius:var(--radius);padding:10px 8px;font-family:'Nunito',sans-serif;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:all .2s}
 .kid-tab .kid-avatar{font-size:30px;line-height:1}
 .kid-tab .kid-name{font-size:14px;font-weight:900;color:var(--muted)}
 .kid-tab .kid-total{font-size:11px;font-weight:600;color:var(--muted)}
 .kid-tab .active-pip{width:8px;height:8px;border-radius:50%;background:transparent;margin-top:2px;transition:background .2s}
 .kid-tab#tab-ben.active{background:var(--ben-light);border-color:var(--ben)}
-.kid-tab#tab-ben.active .kid-name{color:var(--ben)}
-.kid-tab#tab-ben.active .kid-total{color:var(--ben)}
+.kid-tab#tab-ben.active .kid-name,.kid-tab#tab-ben.active .kid-total{color:var(--ben)}
 .kid-tab#tab-ben.active .active-pip{background:var(--ben)}
 .kid-tab#tab-gili.active{background:var(--gili-light);border-color:var(--gili)}
-.kid-tab#tab-gili.active .kid-name{color:var(--gili)}
-.kid-tab#tab-gili.active .kid-total{color:var(--gili)}
+.kid-tab#tab-gili.active .kid-name,.kid-tab#tab-gili.active .kid-total{color:var(--gili)}
 .kid-tab#tab-gili.active .active-pip{background:var(--gili)}
 .kid-panel{display:none;padding:1rem}
 .kid-panel.active{display:block}
@@ -64,16 +66,16 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);dire
 .accent-bar.gili{background:var(--gili)}
 .bal-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1rem}
 .bal-card{border-radius:var(--radius);padding:1rem 1.1rem;border:1.5px solid}
-.bal-card.spend{background:var(--orange-light);border-color:var(--orange-mid)}
+.bal-card.cash{background:var(--orange-light);border-color:var(--orange-mid)}
 .bal-card.save{background:var(--green-light);border-color:#A7F3D0}
 .bal-tag{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;margin-bottom:5px}
-.bal-card.spend .bal-tag{color:var(--orange)}
+.bal-card.cash .bal-tag{color:var(--orange)}
 .bal-card.save .bal-tag{color:var(--green)}
 .bal-num{font-size:26px;font-weight:900;line-height:1}
-.bal-card.spend .bal-num{color:var(--orange)}
+.bal-card.cash .bal-num{color:var(--orange)}
 .bal-card.save .bal-num{color:var(--green-dark)}
 .bal-hint{font-size:11px;margin-top:4px}
-.bal-card.spend .bal-hint{color:#C2410C}
+.bal-card.cash .bal-hint{color:#C2410C}
 .bal-card.save .bal-hint{color:var(--green)}
 .card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:1.1rem;margin-bottom:.875rem}
 .card-title{font-size:15px;font-weight:800;color:var(--green-dark);margin-bottom:.875rem;display:flex;align-items:center;gap:6px}
@@ -83,16 +85,22 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);dire
 input[type=range].split-range{-webkit-appearance:none;appearance:none;width:100%;height:10px;border-radius:5px;outline:none;cursor:pointer;margin-bottom:10px}
 input[type=range].split-range::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;background:#fff;border:3px solid var(--green-dark);cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.15);margin-top:-8px}
 .split-bar{display:flex;border-radius:8px;overflow:hidden;height:38px;margin-bottom:10px}
-.split-bar-spend{background:var(--orange);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;transition:width .08s}
-.split-bar-save{background:var(--green);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;transition:width .08s}
+.split-bar-cash{background:var(--orange);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;transition:width .08s;min-width:0}
+.split-bar-save{background:var(--green);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;transition:width .08s;min-width:0}
+.split-all-row{display:flex;gap:8px;margin-bottom:10px}
+.split-all-btn{flex:1;padding:8px;border-radius:var(--radius-sm);border:1.5px solid;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;background:transparent;transition:all .15s}
+.split-all-btn.cash{border-color:var(--orange);color:var(--orange)}
+.split-all-btn.cash:hover{background:var(--orange);color:#fff}
+.split-all-btn.save{border-color:var(--green);color:var(--green)}
+.split-all-btn.save:hover{background:var(--green);color:#fff}
 .add-week-btn{width:100%;padding:12px;border-radius:var(--radius-sm);border:none;background:var(--green-dark);color:#fff;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:opacity .15s;margin-top:4px}
 .add-week-btn:hover{opacity:.88}
 .chip-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
 .chip{padding:6px 13px;border-radius:20px;font-size:13px;font-weight:700;border:1.5px solid;cursor:pointer;font-family:'Nunito',sans-serif;background:transparent;transition:all .15s}
-.chip.orange{border-color:var(--orange);color:var(--orange)}
-.chip.orange.on{background:var(--orange);color:#fff}
 .chip.green{border-color:var(--green);color:var(--green)}
 .chip.green.on{background:var(--green);color:#fff}
+.chip.orange{border-color:var(--orange);color:var(--orange)}
+.chip.orange.on{background:var(--orange);color:#fff}
 .inp-row{display:flex;gap:8px;align-items:flex-end}
 .inp-group{display:flex;flex-direction:column;gap:3px}
 .inp-group label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
@@ -105,20 +113,24 @@ input[type=range].split-range::-webkit-slider-thumb{-webkit-appearance:none;widt
 .int-left .int-sub{font-size:12px;color:var(--muted)}
 .int-btn{background:var(--green);color:#fff;border:none;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;padding:9px 16px;border-radius:var(--radius-sm);cursor:pointer}
 .int-btn:hover{opacity:.87}
+.int-rate-row{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid #A7F3D0}
+.int-rate-row label{font-size:12px;font-weight:700;color:var(--muted)}
+.int-rate-row input{font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;border:1.5px solid var(--border);border-radius:6px;padding:4px 8px;width:60px;text-align:center}
 .log-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--green-light)}
 .log-item:last-child{border-bottom:none}
 .log-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
 .log-dot.weekly,.log-dot.save{background:var(--green)}
-.log-dot.spend,.log-dot.withdraw{background:var(--orange)}
+.log-dot.cash,.log-dot.withdraw{background:var(--orange)}
 .log-dot.interest{background:#7C3AED}
 .log-info{flex:1}
 .log-type{font-size:13px;font-weight:700}
 .log-note{font-size:12px;color:var(--muted)}
-.log-right{text-align:left}
+.log-right{text-align:left;display:flex;flex-direction:column;align-items:flex-end;gap:2px}
 .log-amt{font-size:14px;font-weight:800}
 .log-amt.pos{color:var(--green-dark)}
 .log-amt.neg{color:var(--orange)}
 .log-date{font-size:11px;color:var(--muted)}
+.undo-btn{font-size:11px;color:#DC2626;background:none;border:none;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;padding:0}
 .log-empty{text-align:center;padding:1.5rem;color:var(--muted);font-size:14px}
 .toast-el{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:var(--green-dark);color:#fff;padding:8px 20px;border-radius:20px;font-size:13px;font-weight:700;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap;z-index:99}
 .toast-el.show{opacity:1}
@@ -134,19 +146,24 @@ input[type=range].split-range::-webkit-slider-thumb{-webkit-appearance:none;widt
     </div>
     <button class="reset-btn" onclick="resetAll()">אפס הכל</button>
   </div>
+  <div class="settings-bar">
+    <label>💰 סכום שבועי:</label>
+    <input type="number" id="weekly-input" min="1" value="100" onchange="saveSettings()">
+    <span class="settings-sep">฿</span>
+  </div>
 </div>
 <div id="tue-banner-el"></div>
 <div class="kid-nav">
   <button class="kid-tab active" id="tab-ben" onclick="switchKid('ben')">
     <span class="kid-avatar">👦</span>
     <span class="kid-name">בן</span>
-    <span class="kid-total" id="tab-ben-total">0 ₪</span>
+    <span class="kid-total" id="tab-ben-total">0 ฿</span>
     <span class="active-pip"></span>
   </button>
   <button class="kid-tab" id="tab-gili" onclick="switchKid('gili')">
     <span class="kid-avatar">👧</span>
     <span class="kid-name">גילי</span>
-    <span class="kid-total" id="tab-gili-total">0 ₪</span>
+    <span class="kid-total" id="tab-gili-total">0 ฿</span>
     <span class="active-pip"></span>
   </button>
 </div>
@@ -161,15 +178,15 @@ if('serviceWorker' in navigator){
   navigator.serviceWorker.register('sw.js').catch(()=>{});
 }
 
-const WEEKLY=100,RATE=.10;
 const KIDS={ben:{name:'בן'},gili:{name:'גילי'}};
 const HE_DAYS=['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
 const HE_MON=['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
-let state={ben:null,gili:null},meta={lastUpdate:null},actType={ben:'spend-out',gili:'spend-out'};
+let state={ben:null,gili:null},meta={lastUpdate:null,weekly:100},actType={ben:'save-extra',gili:'save-extra'};
 let currentKid='ben';
 
-function defKid(){return{spend:0,save:0,log:[]}}
-function fmt(n){return Math.abs(Math.round(n)).toLocaleString('he-IL')+' ₪'}
+function getWeekly(){return parseInt(document.getElementById('weekly-input').value)||100}
+function defKid(){return{cash:0,save:0,rate:10,log:[]}}
+function fmt(n){return Math.abs(Math.round(n)).toLocaleString()+' ฿'}
 function todayStr(){const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
 function shortDate(){const d=new Date();return`${d.getDate()}/${d.getMonth()+1}`}
 function isTue(){return new Date().getDay()===2}
@@ -179,21 +196,23 @@ function fmtDateHe(s){if(!s)return'';const d=new Date(s+'T12:00:00');return`${d.
 
 function load(){
   for(const k of['ben','gili']){
-    try{const r=localStorage.getItem('fam_'+k);state[k]=r?JSON.parse(r):defKid()}
+    try{const r=localStorage.getItem('fam_'+k);state[k]=r?JSON.parse(r):defKid();if(!state[k].rate)state[k].rate=10;}
     catch{state[k]=defKid()}
   }
   try{const r=localStorage.getItem('fam_meta');if(r)meta=JSON.parse(r)}catch{}
+  if(meta.weekly){document.getElementById('weekly-input').value=meta.weekly}
   renderAll();
 }
 function saveKid(k){try{localStorage.setItem('fam_'+k,JSON.stringify(state[k]))}catch{}}
 function saveMeta(){try{localStorage.setItem('fam_meta',JSON.stringify(meta))}catch{}}
+function saveSettings(){meta.weekly=getWeekly();saveMeta();renderAll();}
 
 function renderAll(){
   const now=new Date();
   document.getElementById('today-label').textContent=`היום ${HE_DAYS[now.getDay()]}, ${now.getDate()} ${HE_MON[now.getMonth()]}`;
   for(const k of['ben','gili']){
     const s=state[k];
-    document.getElementById('tab-'+k+'-total').textContent=fmt(s.spend+s.save)+' סה"כ';
+    document.getElementById('tab-'+k+'-total').textContent=fmt(s.cash+s.save)+' סה"כ';
     renderKid(k);
   }
   renderTue();
@@ -218,97 +237,169 @@ function markDone(){meta.lastUpdate=todayStr();saveMeta();renderAll();toast('מ�
 
 function renderKid(kid){
   const s=state[kid];
-  const interest=Math.round(s.save*RATE);
+  const weekly=getWeekly();
+  const rate=s.rate||10;
+  const interest=Math.round(s.save*(rate/100));
+
   const logHtml=s.log.length===0
     ?`<div class="log-empty">עדיין אין פעולות 📭</div>`
-    :[...s.log].reverse().slice(0,15).map(e=>{
-        const dot=e.type==='interest'?'interest':e.type==='weekly'?'weekly':e.amount>0?'save':'spend';
-        const label={spend:'הוצאה 🛍️',save:'הפקדה 🐷',interest:'ריבית ✨',weekly:'דמי כיס 💰','withdraw-save':'משיכה ↩️'}[e.type]||e.type;
-        return`<div class="log-item"><div class="log-dot ${dot}"></div><div class="log-info"><div class="log-type">${label}</div>${e.note?`<div class="log-note">${e.note}</div>`:''}</div><div class="log-right"><div class="log-amt ${e.amount>=0?'pos':'neg'}">${e.amount>=0?'+':'−'}${fmt(e.amount)}</div><div class="log-date">${e.date||''}</div></div></div>`;
+    :[...s.log].reverse().slice(0,20).map((e,ri)=>{
+        const realIdx=s.log.length-1-ri;
+        const dot=e.type==='interest'?'interest':e.type==='weekly'?'weekly':e.amount>0?'save':'cash';
+        const label={cash:'מזומן 💵',save:'חיסכון 🐷',interest:'ריבית ✨',weekly:'דמי כיס 💰','withdraw-save':'משיכה ↩️'}[e.type]||e.type;
+        return`<div class="log-item"><div class="log-dot ${dot}"></div><div class="log-info"><div class="log-type">${label}</div>${e.note?`<div class="log-note">${e.note}</div>`:''}</div><div class="log-right"><div class="log-amt ${e.amount>=0?'pos':'neg'}">${e.amount>=0?'+':'−'}${fmt(e.amount)}</div><div class="log-date">${e.date||''}</div><button class="undo-btn" onclick="undoEntry('${kid}',${realIdx})">בטל ↩</button></div></div>`;
       }).join('');
 
+  // slider
+  const slVal=50;
   document.getElementById('panel-'+kid).innerHTML=`
     <div class="bal-grid">
-      <div class="bal-card spend"><div class="bal-tag">🛍️ בזבוז</div><div class="bal-num">${fmt(s.spend)}</div><div class="bal-hint">יתרה לשימוש חופשי</div></div>
+      <div class="bal-card cash"><div class="bal-tag">💵 מזומן</div><div class="bal-num">${fmt(s.cash)}</div><div class="bal-hint">יתרה מזומן</div></div>
       <div class="bal-card save"><div class="bal-tag">🐷 חיסכון</div><div class="bal-num">${fmt(s.save)}</div><div class="bal-hint">ריבית הבאה: +${fmt(interest)}</div></div>
     </div>
     <div class="card">
-      <div class="card-title">📅 חלוקת שבוע — ${WEEKLY} ₪</div>
-      <div class="split-labels"><span class="sl">🛍️ בזבוז: <span id="${kid}-spv">50</span> ₪</span><span class="sr"><span id="${kid}-svv">50</span> ₪ :חיסכון 🐷</span></div>
-      <input type="range" class="split-range" id="sl-${kid}" min="1" max="99" value="50" oninput="onSl('${kid}',this.value)">
-      <div class="split-bar"><div class="split-bar-spend" id="${kid}-bsp" style="width:50%">50 ₪</div><div class="split-bar-save" id="${kid}-bsv" style="width:50%">50 ₪</div></div>
+      <div class="card-title">📅 חלוקת שבוע — ${weekly} ฿</div>
+      <div class="split-labels"><span class="sl">💵 מזומן: <span id="${kid}-spv">${Math.round(weekly/2)}</span> ฿</span><span class="sr"><span id="${kid}-svv">${Math.round(weekly/2)}</span> ฿ :חיסכון 🐷</span></div>
+      <input type="range" class="split-range" id="sl-${kid}" min="0" max="${weekly}" value="${Math.round(weekly/2)}" oninput="onSl('${kid}',this.value)">
+      <div class="split-bar">
+        <div class="split-bar-cash" id="${kid}-bsp" style="width:50%">${Math.round(weekly/2)} ฿</div>
+        <div class="split-bar-save" id="${kid}-bsv" style="width:50%">${Math.round(weekly/2)} ฿</div>
+      </div>
+      <div class="split-all-row">
+        <button class="split-all-btn cash" onclick="setSplitAll('${kid}','cash')">הכל מזומן 💵</button>
+        <button class="split-all-btn save" onclick="setSplitAll('${kid}','save')">הכל חיסכון 🐷</button>
+      </div>
       <button class="add-week-btn" onclick="addWeek('${kid}')">✅ הוסף שבוע זה</button>
     </div>
     <div class="card">
       <div class="card-title">⚡ פעולה מהירה</div>
       <div class="chip-row">
-        <button class="chip orange on" id="${kid}-c-so" onclick="setAct('${kid}','spend-out')">🛍️ הוצאה</button>
-        <button class="chip green" id="${kid}-c-se" onclick="setAct('${kid}','save-extra')">🐷 הפקדה</button>
-        <button class="chip orange" id="${kid}-c-ws" onclick="setAct('${kid}','withdraw-save')">↩️ משיכה</button>
+        <button class="chip green on" id="${kid}-c-se" onclick="setAct('${kid}','save-extra')">🐷 הפקדה לחיסכון</button>
+        <button class="chip orange" id="${kid}-c-ws" onclick="setAct('${kid}','withdraw-save')">↩️ משיכה מחיסכון</button>
       </div>
       <div class="inp-row">
-        <div class="inp-group" style="max-width:90px"><label>סכום ₪</label><input type="number" id="${kid}-amt" placeholder="0" min="0"></div>
+        <div class="inp-group" style="max-width:90px"><label>סכום ฿</label><input type="number" id="${kid}-amt" placeholder="0" min="0"></div>
         <div class="inp-group" style="flex:1"><label>הערה</label><input type="text" id="${kid}-note" placeholder="למה?"></div>
         <button class="go-btn" onclick="addAct('${kid}')">הוסף ↗</button>
       </div>
     </div>
     <div class="card" style="background:var(--green-pale);border-color:#A7F3D0">
       <div class="interest-row">
-        <div class="int-left"><div class="int-tag">ריבית חודשית 10%</div><div class="int-num">+${fmt(interest)}</div><div class="int-sub">על ${fmt(s.save)} בחיסכון</div></div>
+        <div class="int-left"><div class="int-tag">ריבית חודשית ${rate}%</div><div class="int-num">+${fmt(interest)}</div><div class="int-sub">על ${fmt(s.save)} בחיסכון</div></div>
         <button class="int-btn" onclick="addInterest('${kid}')">הוסף ריבית 🎁</button>
+      </div>
+      <div class="int-rate-row">
+        <label>שיעור ריבית:</label>
+        <input type="number" id="${kid}-rate" value="${rate}" min="0" max="100" onchange="saveRate('${kid}')">
+        <label>%</label>
       </div>
     </div>
     <div class="card"><div class="card-title">📋 היסטוריה</div>${logHtml}</div>
   `;
-  setSl(kid,50);
+  updateSlider(kid, Math.round(weekly/2), weekly);
 }
 
 function onSl(kid,val){
-  val=parseInt(val);const sv=WEEKLY-val;
+  const weekly=getWeekly();
+  val=parseInt(val);
+  const sv=weekly-val;
   document.getElementById(kid+'-spv').textContent=val;
   document.getElementById(kid+'-svv').textContent=sv;
-  document.getElementById(kid+'-bsp').style.width=val+'%';
-  document.getElementById(kid+'-bsp').textContent=val+' ₪';
-  document.getElementById(kid+'-bsv').style.width=sv+'%';
-  document.getElementById(kid+'-bsv').textContent=sv+' ₪';
-  setSl(kid,val);
+  updateSlider(kid,val,weekly);
 }
-function setSl(kid,val){
+
+function updateSlider(kid,val,weekly){
+  const pct=weekly>0?Math.round(val/weekly*100):50;
   const el=document.getElementById('sl-'+kid);
-  if(el)el.style.background=`linear-gradient(to right,var(--orange) ${val}%,var(--green) ${val}%)`;
+  const bsp=document.getElementById(kid+'-bsp');
+  const bsv=document.getElementById(kid+'-bsv');
+  if(el)el.style.background=`linear-gradient(to right,var(--orange) ${pct}%,var(--green) ${pct}%)`;
+  if(bsp){bsp.style.width=pct+'%';bsp.textContent=val+' ฿';}
+  if(bsv){bsv.style.width=(100-pct)+'%';bsv.textContent=(weekly-val)+' ฿';}
 }
-function setAct(kid,type){
-  actType[kid]=type;
-  const map={'spend-out':['so','orange'],'save-extra':['se','green'],'withdraw-save':['ws','orange']};
-  for(const[k,[id,col]] of Object.entries(map)){
-    const el=document.getElementById(kid+'-c-'+id);
-    if(el)el.className='chip '+(col==='green'?'green':'orange')+(k===type?' on':'');
+
+function setSplitAll(kid,type){
+  const weekly=getWeekly();
+  const sl=document.getElementById('sl-'+kid);
+  if(type==='cash'){
+    sl.value=weekly;
+    document.getElementById(kid+'-spv').textContent=weekly;
+    document.getElementById(kid+'-svv').textContent=0;
+    updateSlider(kid,weekly,weekly);
+  } else {
+    sl.value=0;
+    document.getElementById(kid+'-spv').textContent=0;
+    document.getElementById(kid+'-svv').textContent=weekly;
+    updateSlider(kid,0,weekly);
   }
 }
+
+function setAct(kid,type){
+  actType[kid]=type;
+  const seEl=document.getElementById(kid+'-c-se');
+  const wsEl=document.getElementById(kid+'-c-ws');
+  if(seEl)seEl.className='chip green'+(type==='save-extra'?' on':'');
+  if(wsEl)wsEl.className='chip orange'+(type==='withdraw-save'?' on':'');
+}
+
 function addWeek(kid){
+  const weekly=getWeekly();
   const sl=document.getElementById('sl-'+kid);
-  const sp=parseInt(sl.value),sv=WEEKLY-sp;
-  state[kid].spend+=sp;state[kid].save+=sv;
-  state[kid].log.push({date:shortDate(),type:'weekly',amount:WEEKLY,note:`בזבוז ${sp} + חיסכון ${sv}`});
+  const sp=parseInt(sl.value);
+  const sv=weekly-sp;
+  state[kid].cash+=sp;
+  state[kid].save+=sv;
+  state[kid].log.push({date:shortDate(),type:'weekly',amount:weekly,note:`מזומן ${sp} + חיסכון ${sv}`});
   saveKid(kid);renderAll();toast(`${KIDS[kid].name}: שבוע נוסף! 🎉`);
 }
+
 function addAct(kid){
   const amt=parseInt(document.getElementById(kid+'-amt').value)||0;
   const note=document.getElementById(kid+'-note').value;
   if(!amt){toast('הכנס סכום',true);return}
   const s=state[kid],type=actType[kid],d=shortDate();
-  if(type==='spend-out'){s.spend-=amt;s.log.push({date:d,type:'spend',amount:-amt,note})}
-  else if(type==='save-extra'){s.save+=amt;s.log.push({date:d,type:'save',amount:amt,note})}
+  if(type==='save-extra'){s.save+=amt;s.log.push({date:d,type:'save',amount:amt,note})}
   else if(type==='withdraw-save'){s.save-=amt;s.log.push({date:d,type:'withdraw-save',amount:-amt,note})}
   saveKid(kid);renderAll();toast('נרשם ✅');
 }
+
 function addInterest(kid){
   const s=state[kid];
   if(s.save<=0){toast('אין כסף בחיסכון',true);return}
-  const i=Math.round(s.save*RATE);s.save+=i;
-  s.log.push({date:shortDate(),type:'interest',amount:i,note:'10% ריבית חודשית'});
+  const rate=s.rate||10;
+  const i=Math.round(s.save*(rate/100));
+  s.save+=i;
+  s.log.push({date:shortDate(),type:'interest',amount:i,note:`${rate}% ריבית חודשית`});
   saveKid(kid);renderAll();toast(`ריבית +${fmt(i)} נוספה! ✨`);
 }
+
+function saveRate(kid){
+  const el=document.getElementById(kid+'-rate');
+  const rate=parseFloat(el.value)||10;
+  state[kid].rate=rate;
+  saveKid(kid);renderAll();toast('שיעור ריבית עודכן ✅');
+}
+
+function undoEntry(kid,idx){
+  const s=state[kid];
+  const e=s.log[idx];
+  if(!e)return;
+  if(!confirm(`לבטל את הפעולה: ${e.note||e.type} (${fmt(e.amount)})?`))return;
+  // reverse the effect
+  if(e.type==='weekly'){s.cash-=(e.amount-(e.amount- (parseInt((e.note||'').match(/מזומן (\d+)/)?.[1]||e.amount))));
+    const cashPart=parseInt((e.note||'').match(/מזומן (\d+)/)?.[1]??e.amount);
+    const savePart=e.amount-cashPart;
+    s.cash-=cashPart;s.save-=savePart;
+    // undo the double subtraction from above
+    s.cash+=( e.amount-(e.amount- (parseInt((e.note||'').match(/מזומן (\d+)/)?.[1]||e.amount))));
+  } else if(e.type==='save'){s.save-=e.amount}
+  else if(e.type==='withdraw-save'){s.save+=Math.abs(e.amount)}
+  else if(e.type==='interest'){s.save-=e.amount}
+  else if(e.type==='cash'){s.cash+=Math.abs(e.amount)}
+  s.log.splice(idx,1);
+  saveKid(kid);renderAll();toast('פעולה בוטלה ↩');
+}
+
 function switchKid(kid){
   currentKid=kid;
   document.querySelectorAll('.kid-tab').forEach((t,i)=>t.classList.toggle('active',['ben','gili'][i]===kid));
@@ -316,11 +407,15 @@ function switchKid(kid){
   document.getElementById('panel-'+kid).classList.add('active');
   document.getElementById('accent-bar').className='accent-bar '+kid;
 }
+
 function resetAll(){
   if(!confirm('למחוק את כל הנתונים?'))return;
   for(const k of['ben','gili']){state[k]=defKid();saveKid(k)}
-  meta={lastUpdate:null};saveMeta();renderAll();toast('הכל אופס');
+  meta={lastUpdate:null,weekly:100};saveMeta();
+  document.getElementById('weekly-input').value=100;
+  renderAll();toast('הכל אופס');
 }
+
 let tt;
 function toast(msg,err){
   const el=document.getElementById('toast');
