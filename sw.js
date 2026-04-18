@@ -1,47 +1,26 @@
-const CACHE_NAME = 'family-bank-v1';
-const ASSETS_TO_CACHE = [
-  './',
-  'index.html',
-  'manifest.json',
-  'icon-192.svg',
-  'icon-512.svg'
+const CACHE = 'family-bank-v3';
+const FILES = [
+  '/family-bank/',
+  '/family-bank/index.html',
+  '/family-bank/manifest.json',
+  '/family-bank/icon-192.svg',
+  '/family-bank/icon-512.svg'
 ];
 
-// התקנת ה-Service Worker ושמירת הקבצים בזיכרון המטמון (Cache)
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      console.log('Caching app assets');
-      return cache.addAll(ASSETS_TO_CACHE);
-    })
-  );
-  // גורם ל-SW החדש להיכנס לפעולה מיד ללא צורך בסגירת האפליקציה
+self.addEventListener('install', e => {
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)));
   self.skipWaiting();
 });
 
-// ניקוי זיכרון ישן במידה ושדרגת גרסה
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cache) => {
-          if (cache !== CACHE_NAME) {
-            console.log('Clearing old cache');
-            return caches.delete(cache);
-          }
-        })
-      );
-    })
-  );
-  return self.clients.claim();
+self.addEventListener('activate', e => {
+  e.waitUntil(caches.keys().then(keys =>
+    Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
+  ));
+  self.clients.claim();
 });
 
-// ניהול בקשות הרשת - מאפשר לאפליקציה לעבוד Offline
-self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request).then((response) => {
-      // אם הקובץ קיים בזיכרון, החזר אותו. אם לא, פנה לרשת.
-      return response || fetch(event.request);
-    })
+self.addEventListener('fetch', e => {
+  e.respondWith(
+    fetch(e.request).catch(() => caches.match(e.request))
   );
 });
